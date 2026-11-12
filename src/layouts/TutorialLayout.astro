@@ -1,0 +1,32 @@
+---
+const { frontmatter } = Astro.props;
+---
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>{frontmatter.title} | Skilloop</title>
+    <meta name="description" content={frontmatter.description} />
+    <style>
+      body { font-family: Arial, sans-serif; margin: 0; display: flex; min-height: 100vh; }
+      nav { width: 230px; background: #f3f4f6; padding: 20px; }
+      nav a { display: block; padding: 6px 0; color: #1f2937; text-decoration: none; }
+      nav a:hover { color: #2563eb; }
+      main { flex: 1; padding: 30px; max-width: 800px; line-height: 1.7; }
+      pre { background: #111827; color: #f9fafb; padding: 14px; border-radius: 6px; overflow-x: auto; }
+      @media (max-width: 700px) { body { flex-direction: column; } nav { width: auto; } }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <h3><a href="/">Skilloop</a></h3>
+      <strong>Python</strong>
+      <a href="/python/introduction">Introduction</a>
+      <a href="/python/variables">Variables</a>
+    </nav>
+    <main>
+      <h1>{frontmatter.title}</h1>
+      <slot />
+    </main>
+  </body>
+</html>
