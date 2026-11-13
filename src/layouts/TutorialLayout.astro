@@ -14,6 +14,8 @@ const { frontmatter } = Astro.props;
       nav a:hover { color: #2563eb; }
       main { flex: 1; padding: 30px; max-width: 800px; line-height: 1.7; }
       pre { background: #111827; color: #f9fafb; padding: 14px; border-radius: 6px; overflow-x: auto; }
+      table { border-collapse: collapse; }
+      th, td { border: 1px solid #d1d5db; padding: 6px 12px; }
       @media (max-width: 700px) { body { flex-direction: column; } nav { width: auto; } }
     </style>
   </head>
@@ -23,6 +25,11 @@ const { frontmatter } = Astro.props;
       <strong>Python</strong>
       <a href="/python/introduction">Introduction</a>
       <a href="/python/variables">Variables</a>
+      <a href="/python/data-types">Data Types</a>
+      <a href="/python/operators">Operators</a>
+      <a href="/python/if-else">If-Else</a>
+      <a href="/python/loops">Loops</a>
+      <a href="/python/functions">Functions</a>
     </nav>
     <main>
       <h1>{frontmatter.title}</h1>
