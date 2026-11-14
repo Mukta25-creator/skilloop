@@ -2,8 +2,8 @@
 layout: ../../layouts/TutorialLayout.astro
 title: "Functions in Python"
 description: "Learn how to create and use functions in Python with parameters, return values and default arguments."
-order: 14
-group: "Functions and Files"
+order: 4
+group: "Basics"
 ---
 
 A function is a block of code that you write once and use many times.
