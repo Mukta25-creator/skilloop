@@ -1,42 +1,40 @@
 ---
 const brand = "HireReady";
-const all = Object.values(import.meta.glob('./*.md', { eager: true }));
-const lessons = all
-  .map((p) => ({
-    url: p.url,
-    title: p.frontmatter.title,
-    order: p.frontmatter.order ?? 999,
-    group: p.frontmatter.group ?? "Python",
-  }))
-  .sort((a, b) => a.order - b.order);
-const groups = [...new Set(lessons.map((l) => l.group))];
+const price = "Rs 49";
+const upi = "6265543585-2@ybl";
+const whatsapp = "919663519674";
+const waLink = `https://wa.me/${whatsapp}?text=${encodeURIComponent("Hi, I paid for the ATS resume checker. Sending my payment screenshot.")}`;
 ---
 <html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
-    <title>Python Course for Beginners | {brand}</title>
-    <meta name="description" content="Free Python course for beginners with examples, projects and interview questions." />
+    <title>{brand} - Free Programming Tutorials</title>
+    <meta name="description" content="Free programming tutorials and an ATS resume checker for students." />
     <style>
-      body { font-family: Arial, sans-serif; max-width: 760px; margin: 40px auto; padding: 0 20px; line-height: 1.6; color: #1f2937; }
-      a { color: #2563eb; text-decoration: none; }
-      a:hover { text-decoration: underline; }
-      h2 { margin-top: 28px; border-bottom: 1px solid #e5e7eb; padding-bottom: 4px; }
+      body { font-family: Arial, sans-serif; max-width: 700px; margin: 40px auto; padding: 0 20px; line-height: 1.6; color: #1f2937; }
+      .btn { display: inline-block; background: #2563eb; color: #fff; padding: 12px 20px; border-radius: 8px; text-decoration: none; font-weight: bold; }
+      .btn:hover { background: #1d4ed8; }
+      .box { background: #f3f4f6; border-radius: 10px; padding: 20px; margin-top: 30px; }
+      .upi { background: #fff; border: 1px dashed #9ca3af; padding: 8px 12px; border-radius: 6px; display: inline-block; font-family: monospace; }
     </style>
   </head>
   <body>
-    <p><a href="/">&larr; {brand}</a></p>
-    <h1>Python Course for Beginners</h1>
-    <p>Learn Python step by step, from your first program to projects and interview questions. Start with lesson 1 and go in order.</p>
-    {groups.map((g) => (
-      <div>
-        <h2>{g}</h2>
-        <ol start={lessons.findIndex((l) => l.group === g) + 1}>
-          {lessons.filter((l) => l.group === g).map((l) => (
-            <li><a href={l.url}>{l.title}</a></li>
-          ))}
-        </ol>
-      </div>
-    ))}
+    <h1>{brand}</h1>
+    <p>Free programming tutorials and career tools for students.</p>
+
+    <p><a class="btn" href="/python/">Start the Python Course</a></p>
+    <p><a href="#resume-tool">Check your resume for ATS ({price})</a></p>
+
+    <div class="box" id="resume-tool">
+      <h2>ATS Resume Checker - {price}</h2>
+      <p>Many companies use ATS software to filter resumes before a recruiter sees them. Our tool checks your resume and shows you what to fix.</p>
+      <ol>
+        <li>Pay {price} via UPI to: <span class="upi">{upi}</span></li>
+        <li>Send your payment screenshot on WhatsApp.</li>
+        <li>You get your access link within a few hours.</li>
+      </ol>
+      <p><a class="btn" href={waLink}>Send payment screenshot on WhatsApp</a></p>
+    </div>
   </body>
 </html>
