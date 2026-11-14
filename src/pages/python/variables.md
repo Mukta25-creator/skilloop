@@ -1,13 +1,7 @@
 ---
 layout: ../../layouts/TutorialLayout.astro
 title: "Variables in Python"
-description: "Learn how to declare and use variables in Python with examples."
+description: "Learn how to create and name variables in Python with simple examples."
+order: 2
+group: "Basics"
 ---
-
-A variable stores a value that you can use later.
-
-```python
-name = "Mukta"
-age = 20
-print(name, age)
-```
