@@ -1,39 +1,41 @@
 ---
 layout: ../../layouts/TutorialLayout.astro
 title: "Loops in Python"
-description: "Learn for loops and while loops in Python, with break and continue, using simple examples."
+description: "Learn for loops, while loops, range, break and continue in Python with examples."
+order: 6
+group: "Basics"
 ---
 
 A loop repeats code so you do not have to write it many times.
 
-## for loop
+## for loop with range()
 
 ```python
 for i in range(5):
-    print(i)
+    print(i)          # 0 1 2 3 4
+
+for i in range(1, 6):
+    print(i)          # 1 to 5
+
+for i in range(0, 10, 2):
+    print(i)          # 0 2 4 6 8
 ```
 
-Output: `0 1 2 3 4` (each on a new line). `range(5)` gives numbers from 0 to 4.
-
-You can also loop over a list:
+## Looping over a list
 
 ```python
 skills = ["Python", "SQL", "Excel"]
-
 for skill in skills:
     print(skill)
 ```
 
 ## while loop
 
-A `while` loop runs as long as its condition is true.
-
 ```python
 count = 1
-
 while count <= 3:
     print("Count is", count)
-    count = count + 1
+    count += 1
 ```
 
 ## break and continue
@@ -41,12 +43,21 @@ while count <= 3:
 ```python
 for i in range(1, 10):
     if i == 3:
-        continue   # skip 3
+        continue    # skip 3
     if i == 6:
-        break      # stop the loop at 6
-    print(i)
+        break       # stop at 6
+    print(i)        # 1 2 4 5
 ```
 
-Output: `1 2 4 5`
+## Nested loops
 
-Next: [Functions in Python](/python/functions)
+```python
+for i in range(1, 4):
+    for j in range(1, 4):
+        print(i * j, end=" ")
+    print()
+```
+
+## Practice
+
+Print the multiplication table of 7 up to 10.
