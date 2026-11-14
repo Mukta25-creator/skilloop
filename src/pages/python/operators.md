@@ -1,29 +1,27 @@
 ---
 layout: ../../layouts/TutorialLayout.astro
 title: "Operators in Python"
-description: "Learn arithmetic, comparison and logical operators in Python with simple examples."
+description: "Learn arithmetic, comparison, logical, assignment and membership operators in Python."
+order: 5
+group: "Basics"
 ---
 
-Operators perform actions on values. Python has three groups you will use every day.
+Operators perform actions on values.
 
 ## Arithmetic operators
 
 ```python
-a = 10
-b = 3
-
-print(a + b)   # 13  addition
-print(a - b)   # 7   subtraction
-print(a * b)   # 30  multiplication
-print(a / b)   # 3.333...  division
-print(a // b)  # 3   floor division
-print(a % b)   # 1   remainder
-print(a ** b)  # 1000  power
+a, b = 10, 3
+print(a + b)    # 13
+print(a - b)    # 7
+print(a * b)    # 30
+print(a / b)    # 3.333...
+print(a // b)   # 3  (floor division)
+print(a % b)    # 1  (remainder)
+print(a ** b)   # 1000 (power)
 ```
 
-## Comparison operators
-
-These give `True` or `False`.
+## Comparison operators (give True or False)
 
 ```python
 x = 5
@@ -38,10 +36,26 @@ print(x <= 4)   # False
 ```python
 age = 20
 has_id = True
-
 print(age >= 18 and has_id)   # True
 print(age < 18 or has_id)     # True
 print(not has_id)             # False
 ```
 
-Next: [If-else in Python](/python/if-else)
+## Assignment operators
+
+```python
+n = 10
+n += 5    # n = n + 5 -> 15
+n *= 2    # 30
+```
+
+## Membership operators
+
+```python
+print("a" in "banana")        # True
+print(5 not in [1, 2, 3])     # True
+```
+
+## Practice
+
+Check whether a number is divisible by both 3 and 5.
