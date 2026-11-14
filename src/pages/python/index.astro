@@ -1,0 +1,42 @@
+---
+const brand = "HireReady";
+const all = Object.values(import.meta.glob('./*.md', { eager: true }));
+const lessons = all
+  .map((p) => ({
+    url: p.url,
+    title: p.frontmatter.title,
+    order: p.frontmatter.order ?? 999,
+    group: p.frontmatter.group ?? "Python",
+  }))
+  .sort((a, b) => a.order - b.order);
+const groups = [...new Set(lessons.map((l) => l.group))];
+---
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Python Course for Beginners | {brand}</title>
+    <meta name="description" content="Free Python course for beginners with examples, projects and interview questions." />
+    <style>
+      body { font-family: Arial, sans-serif; max-width: 760px; margin: 40px auto; padding: 0 20px; line-height: 1.6; color: #1f2937; }
+      a { color: #2563eb; text-decoration: none; }
+      a:hover { text-decoration: underline; }
+      h2 { margin-top: 28px; border-bottom: 1px solid #e5e7eb; padding-bottom: 4px; }
+    </style>
+  </head>
+  <body>
+    <p><a href="/">&larr; {brand}</a></p>
+    <h1>Python Course for Beginners</h1>
+    <p>Learn Python step by step, from your first program to projects and interview questions. Start with lesson 1 and go in order.</p>
+    {groups.map((g) => (
+      <div>
+        <h2>{g}</h2>
+        <ol start={lessons.findIndex((l) => l.group === g) + 1}>
+          {lessons.filter((l) => l.group === g).map((l) => (
+            <li><a href={l.url}>{l.title}</a></li>
+          ))}
+        </ol>
+      </div>
+    ))}
+  </body>
+</html>
