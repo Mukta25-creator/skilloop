@@ -1,41 +1,44 @@
 ---
 const brand = "HireReady";
-const all = Object.values(import.meta.glob('./*.md', { eager: true }));
-const guides = all
-  .map((p) => ({
-    url: p.url,
-    title: p.frontmatter.title,
-    description: p.frontmatter.description,
-    order: p.frontmatter.order ?? 999,
-  }))
-  .sort((a, b) => a.order - b.order);
+const price = "Rs 149";
+const upi = "6265543585-2@ybl";
+const whatsapp = "919663519674";
+const waLink = `https://wa.me/${whatsapp}?text=${encodeURIComponent("Hi, I paid for the ATS resume checker. Sending my payment screenshot.")}`;
 ---
 <html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
-    <title>Resume and Career Guides for Students | {brand}</title>
-    <meta name="description" content="Free resume, ATS and placement guides for college students and freshers." />
+    <title>{brand} - Free Programming Tutorials and ATS Resume Checker</title>
+    <meta name="description" content="Free programming tutorials, resume guides and an ATS resume checker for students." />
     <style>
-      body { font-family: Arial, sans-serif; max-width: 760px; margin: 40px auto; padding: 0 20px; line-height: 1.6; color: #1f2937; }
-      a { color: #2563eb; text-decoration: none; }
-      a:hover { text-decoration: underline; }
-      li { margin-bottom: 14px; }
-      small { color: #6b7280; display: block; }
+      body { font-family: Arial, sans-serif; max-width: 700px; margin: 40px auto; padding: 0 20px; line-height: 1.6; color: #1f2937; }
+      .btn { display: inline-block; background: #2563eb; color: #fff; padding: 12px 20px; border-radius: 8px; text-decoration: none; font-weight: bold; margin: 4px 0; }
+      .btn:hover { background: #1d4ed8; }
+      .btn.alt { background: #059669; }
+      .btn.alt:hover { background: #047857; }
+      .box { background: #f3f4f6; border-radius: 10px; padding: 20px; margin-top: 30px; }
+      .upi { background: #fff; border: 1px dashed #9ca3af; padding: 8px 12px; border-radius: 6px; display: inline-block; font-family: monospace; }
     </style>
   </head>
   <body>
-    <p><a href="/">&larr; {brand}</a></p>
-    <h1>Resume and Career Guides</h1>
-    <p>Free guides to help students and freshers build better resumes and prepare for placements.</p>
-    <p><a href="/tools/ats-keyword-matcher.html"><strong>Free tool: ATS Keyword Matcher</strong></a></p>
-    <ul>
-      {guides.map((g) => (
-        <li>
-          <a href={g.url}>{g.title}</a>
-          <small>{g.description}</small>
-        </li>
-      ))}
-    </ul>
+    <h1>{brand}</h1>
+    <p>Free programming tutorials and career tools for students.</p>
+
+    <p><a class="btn" href="/python/">Start the Python Course</a></p>
+    <p><a class="btn" href="/career/">Resume and Career Guides</a></p>
+    <p><a href="/tools/ats-keyword-matcher.html">Free tool: ATS Keyword Matcher</a></p>
+    <p><a class="btn alt" href="#resume-tool">Check your resume for ATS ({price})</a></p>
+
+    <div class="box" id="resume-tool">
+      <h2>ATS Resume Checker - {price}</h2>
+      <p>Many companies use ATS software to filter resumes before a recruiter sees them. Our tool checks your resume and shows you what to fix so it gets through.</p>
+      <ol>
+        <li>Pay {price} via UPI to: <span class="upi">{upi}</span></li>
+        <li>Send your payment screenshot on WhatsApp.</li>
+        <li>You get your access link within a few hours.</li>
+      </ol>
+      <p><a class="btn" href={waLink}>Send payment screenshot on WhatsApp</a></p>
+    </div>
   </body>
 </html>
