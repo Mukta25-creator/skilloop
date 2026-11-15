@@ -2,17 +2,24 @@
 const { frontmatter } = Astro.props;
 const brand = "HireReady";
 
-const all = Object.values(import.meta.glob('../pages/python/*.md', { eager: true }));
+const all = Object.values(
+  import.meta.glob(['../pages/python/*.md', '../pages/career/*.md'], { eager: true })
+);
+
+const current = Astro.url.pathname.replace(/\/$/, "");
+const section = current.split("/")[1] || "python";
+const sectionTitle = section === "career" ? "Career Guides" : "Python Course";
+
 const lessons = all
+  .filter((p) => p.url.startsWith(`/${section}/`))
   .map((p) => ({
     url: p.url,
     title: p.frontmatter.title,
     order: p.frontmatter.order ?? 999,
-    group: p.frontmatter.group ?? "Python",
+    group: p.frontmatter.group ?? sectionTitle,
   }))
   .sort((a, b) => a.order - b.order);
 
-const current = Astro.url.pathname.replace(/\/$/, "");
 const i = lessons.findIndex((l) => l.url === current);
 const prev = i > 0 ? lessons[i - 1] : null;
 const next = i >= 0 && i < lessons.length - 1 ? lessons[i + 1] : null;
@@ -45,7 +52,7 @@ const groups = [...new Set(lessons.map((l) => l.group))];
   <body>
     <nav>
       <h3><a href="/">{brand}</a></h3>
-      <a href="/python/"><strong>Python Course</strong></a>
+      <a href={`/${section}/`}><strong>{sectionTitle}</strong></a>
       {groups.map((g) => (
         <div>
           <strong>{g}</strong>
