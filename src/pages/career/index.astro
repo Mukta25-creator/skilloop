@@ -1,0 +1,41 @@
+---
+const brand = "HireReady";
+const all = Object.values(import.meta.glob('./*.md', { eager: true }));
+const guides = all
+  .map((p) => ({
+    url: p.url,
+    title: p.frontmatter.title,
+    description: p.frontmatter.description,
+    order: p.frontmatter.order ?? 999,
+  }))
+  .sort((a, b) => a.order - b.order);
+---
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Resume and Career Guides for Students | {brand}</title>
+    <meta name="description" content="Free resume, ATS and placement guides for college students and freshers." />
+    <style>
+      body { font-family: Arial, sans-serif; max-width: 760px; margin: 40px auto; padding: 0 20px; line-height: 1.6; color: #1f2937; }
+      a { color: #2563eb; text-decoration: none; }
+      a:hover { text-decoration: underline; }
+      li { margin-bottom: 14px; }
+      small { color: #6b7280; display: block; }
+    </style>
+  </head>
+  <body>
+    <p><a href="/">&larr; {brand}</a></p>
+    <h1>Resume and Career Guides</h1>
+    <p>Free guides to help students and freshers build better resumes and prepare for placements.</p>
+    <p><a href="/tools/ats-keyword-matcher.html"><strong>Free tool: ATS Keyword Matcher</strong></a></p>
+    <ul>
+      {guides.map((g) => (
+        <li>
+          <a href={g.url}>{g.title}</a>
+          <small>{g.description}</small>
+        </li>
+      ))}
+    </ul>
+  </body>
+</html>
