@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Free ATS Keyword Matcher | HireReady</title>
+  <meta name="description" content="Paste a job description and your resume to see which keywords you are missing. Runs in your browser, nothing is uploaded." />
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 800px; margin: 30px auto; padding: 0 20px; line-height: 1.6; color: #1f2937; }
+    a { color: #2563eb; text-decoration: none; }
+    textarea { width: 100%; height: 180px; padding: 10px; box-sizing: border-box; font-family: inherit; font-size: 14px; border: 1px solid #d1d5db; border-radius: 6px; }
+    label { display: block; font-weight: bold; margin-top: 16px; }
+    button { background: #2563eb; color: #fff; border: 0; padding: 12px 22px; border-radius: 8px; font-weight: bold; font-size: 15px; margin-top: 16px; cursor: pointer; }
+    button:hover { background: #1d4ed8; }
+    .tag { display: inline-block; padding: 3px 10px; border-radius: 14px; margin: 3px 4px 3px 0; font-size: 13px; }
+    .ok { background: #d1fae5; color: #065f46; }
+    .miss { background: #fee2e2; color: #991b1b; }
+    .box { background: #f3f4f6; border-radius: 10px; padding: 16px 20px; margin-top: 24px; }
+    .note { font-size: 13px; color: #6b7280; margin-top: 20px; }
+  </style>
+</head>
+<body>
+  <p><a href="/">&larr; HireReady</a></p>
+  <h1>Free ATS Keyword Matcher</h1>
+  <p>Paste a job description and your resume text. The tool shows which important keywords from the job appear in your resume and which are missing. Everything runs in your browser. Nothing is uploaded or saved.</p>
+
+  <label for="jd">1. Job description</label>
+  <textarea id="jd" placeholder="Paste the job description here"></textarea>
+
+  <label for="resume">2. Your resume text</label>
+  <textarea id="resume" placeholder="Paste your resume text here"></textarea>
+
+  <button id="go">Check keywords</button>
+
+  <div id="out" class="box" hidden>
+    <h2 id="score"></h2>
+    <h3>Found in your resume</h3>
+    <div id="matched"></div>
+    <h3>Missing from your resume</h3>
+    <div id="missing"></div>
+    <p>Add a missing keyword only if it honestly describes a skill or experience you have.</p>
+  </div>
+
+  <p class="note">This is a simple keyword check to help you improve your resume. Real ATS software works differently from company to company, so use the result as a guide, not a guarantee.</p>
+  <p><a href="/career/">Read our resume guides</a> | <a href="/#resume-tool">Get a full ATS resume check</a></p>
+
+  <script>
+    var STOP = new Set(("a an the and or of to in for on with at by from is are was were be been as it this that these those your you we our us will can could would should may might have has had not but all any more most such who whom which their them they his her its also than then into over about using use used able must per etc do does did if so no up out new work working team role job candidate looking join years year experience required preferred plus including include ability strong good great").split(" "));
+
+    function tokens(text) {
+      return (text.toLowerCase().match(/[a-z][a-z0-9+#.\-]*/g) || [])
+        .map(function (w) { return w.replace(/[.\-]+$/, ""); })
+        .filter(function (w) { return w.length >= 2 && !STOP.has(w); });
+    }
+
+    function fill(id, list, cls) {
+      var el = document.getElementById(id);
+      el.innerHTML = "";
+      if (!list.length) { el.textContent = "None"; return; }
+      list.forEach(function (w) {
+        var s = document.createElement("span");
+        s.className = "tag " + cls;
+        s.textContent = w;
+        el.appendChild(s);
+      });
+    }
+
+    document.getElementById("go").addEventListener("click", function () {
+      var jd = document.getElementById("jd").value.trim();
+      var resume = document.getElementById("resume").value.trim();
+      if (!jd || !resume) {
+        alert("Please paste both the job description and your resume text.");
+        return;
+      }
+      var counts = new Map();
+      tokens(jd).forEach(function (w) { counts.set(w, (counts.get(w) || 0) + 1); });
+      var keywords = Array.from(counts.entries())
+        .sort(function (a, b) { return b[1] - a[1]; })
+        .slice(0, 30)
+        .map(function (e) { return e[0]; });
+      var have = new Set(tokens(resume));
+      var matched = keywords.filter(function (k) { return have.has(k); });
+      var missing = keywords.filter(function (k) { return !have.has(k); });
+      var score = keywords.length ? Math.round((matched.length / keywords.length) * 100) : 0;
+      document.getElementById("score").textContent =
+        score + "% of the top " + keywords.length + " job keywords found in your resume";
+      fill("matched", matched, "ok");
+      fill("missing", missing, "miss");
+      document.getElementById("out").hidden = false;
+    });
+  </script>
+</body>
+</html>
