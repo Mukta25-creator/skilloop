@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Free ATS-Friendly Resume Builder | HireReady</title>
+  <meta name="description" content="Build a clean one-column resume in your browser and save it as a PDF. Nothing is uploaded." />
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; color: #1f2937; }
+    .top { padding: 14px 20px; background: #eff6ff; }
+    .top a { color: #2563eb; text-decoration: none; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; padding: 20px; }
+    label { display: block; font-weight: bold; font-size: 13px; margin-top: 12px; }
+    input, textarea { width: 100%; box-sizing: border-box; padding: 8px; border: 1px solid #d1d5db; border-radius: 6px; font-family: inherit; font-size: 14px; }
+    textarea { height: 90px; }
+    button { background: #2563eb; color: #fff; border: 0; padding: 12px 20px; border-radius: 8px; font-weight: bold; margin-top: 16px; cursor: pointer; }
+    #preview { border: 1px solid #d1d5db; padding: 28px; font-family: Arial, sans-serif; font-size: 13px; line-height: 1.45; min-height: 600px; background: #fff; }
+    #preview h1 { font-size: 22px; margin: 0; }
+    #preview h2 { font-size: 14px; border-bottom: 1px solid #111; margin: 14px 0 4px; text-transform: uppercase; }
+    #preview p { margin: 2px 0; }
+    #preview ul { margin: 2px 0 2px 18px; padding: 0; }
+    .contact { margin: 4px 0; }
+    .hint { font-size: 12px; color: #6b7280; }
+    @media (max-width: 800px) { .grid { grid-template-columns: 1fr; } }
+    @media print { .top, .form, .hint { display: none; } .grid { display: block; padding: 0; } #preview { border: 0; padding: 0; } }
+  </style>
+</head>
+<body>
+  <div class="top"><a href="/">&larr; HireReady</a> | Free Resume Builder. Everything stays in your browser.</div>
+  <div class="grid">
+    <div class="form">
+      <label>Full name</label><input id="name" />
+      <label>City</label><input id="city" />
+      <label>Phone</label><input id="phone" />
+      <label>Email</label><input id="email" />
+      <label>LinkedIn link</label><input id="linkedin" />
+      <label>GitHub or portfolio link</label><input id="github" />
+      <p class="hint">In the boxes below, start a line with a dash (-) to make a bullet point.</p>
+      <label>Summary (2 lines)</label><textarea id="summary"></textarea>
+      <label>Education</label><textarea id="education" placeholder="B.Tech Computer Science, College Name (2023-2027), CGPA 8.2"></textarea>
+      <label>Skills</label><textarea id="skills" placeholder="Languages: Python, SQL&#10;Tools: Git, Excel"></textarea>
+      <label>Projects</label><textarea id="projects" placeholder="Student Marks Tracker | Python, SQL&#10;- Built an app to store and analyse marks of 50 students"></textarea>
+      <label>Experience / Internships</label><textarea id="experience"></textarea>
+      <label>Certifications and achievements</label><textarea id="certs"></textarea>
+      <button onclick="window.print()">Save as PDF (Print)</button>
+      <p class="hint">In the print window, choose "Save as PDF" as the printer.</p>
+    </div>
+    <div id="preview"></div>
+  </div>
+  <script>
+    var sections = [["summary","Summary"],["education","Education"],["skills","Skills"],["projects","Projects"],["experience","Experience / Internships"],["certs","Certifications and Achievements"]];
+    function esc(s){ return s.replace(/[&<>"]/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]; }); }
+    function fmt(text){
+      var out = "", list = false;
+      text.split("\n").forEach(function(line){
+        line = line.trim(); if (!line) return;
+        if (line.charAt(0) === "-") {
+          if (!list) { out += "<ul>"; list = true; }
+          out += "<li>" + esc(line.replace(/^-\s*/, "")) + "</li>";
+        } else {
+          if (list) { out += "</ul>"; list = false; }
+          out += "<p>" + esc(line) + "</p>";
+        }
+      });
+      if (list) out += "</ul>";
+      return out;
+    }
+    function val(id){ return document.getElementById(id).value.trim(); }
+    function render(){
+      var html = "<h1>" + esc(val("name") || "Your Name") + "</h1>";
+      var contact = ["city","phone","email","linkedin","github"].map(val).filter(Boolean).map(esc).join(" | ");
+      if (contact) html += "<p class='contact'>" + contact + "</p>";
+      sections.forEach(function(s){
+        var v = val(s[0]);
+        if (v) html += "<h2>" + s[1] + "</h2>" + fmt(v);
+      });
+      document.getElementById("preview").innerHTML = html;
+    }
+    document.querySelectorAll("input, textarea").forEach(function(el){ el.addEventListener("input", render); });
+    render();
+  </script>
+</body>
+</html>

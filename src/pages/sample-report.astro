@@ -1,0 +1,52 @@
+---
+const brand = "HireReady";
+---
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Sample ATS Resume Report | {brand}</title>
+    <meta name="description" content="See what an ATS resume analysis report looks like before you buy." />
+    <style>
+      body { font-family: Arial, sans-serif; max-width: 760px; margin: 30px auto; padding: 0 20px; line-height: 1.6; color: #1f2937; }
+      a { color: #2563eb; }
+      .note { background: #fef3c7; padding: 10px 14px; border-radius: 8px; }
+      .score { font-size: 40px; font-weight: bold; color: #d97706; }
+      table { border-collapse: collapse; width: 100%; }
+      th, td { border: 1px solid #d1d5db; padding: 8px 12px; text-align: left; }
+      .bad { color: #b91c1c; } .ok { color: #047857; }
+    </style>
+  </head>
+  <body>
+    <p><a href="/">&larr; {brand}</a></p>
+    <h1>Sample ATS Resume Report</h1>
+    <p class="note"><b>Sample only.</b> This is an example with made-up data to show the format. Your report will be based on your own resume.</p>
+
+    <h2>Overall result</h2>
+    <p class="score">68 / 100</p>
+    <p>Good content, but some formatting and keyword problems may stop software from reading it properly.</p>
+
+    <h2>Formatting review</h2>
+    <table>
+      <tr><th>Check</th><th>Result</th></tr>
+      <tr><td>Single-column layout</td><td class="ok">Pass</td></tr>
+      <tr><td>Standard section headings</td><td class="ok">Pass</td></tr>
+      <tr><td>Tables or text boxes</td><td class="bad">Found in Skills section</td></tr>
+      <tr><td>Contact details in header</td><td class="bad">May be missed. Move to the main body</td></tr>
+    </table>
+
+    <h2>Keyword analysis (for a Python Developer job post)</h2>
+    <p><b class="ok">Found:</b> Python, SQL, Git, OOP</p>
+    <p><b class="bad">Missing:</b> REST API, Flask, unit testing, Linux</p>
+    <p>Add a missing keyword only if it truly describes your experience.</p>
+
+    <h2>Suggestions</h2>
+    <ol>
+      <li>Replace the Skills table with a simple comma-separated list.</li>
+      <li>Add a result to your project bullets, for example how many users or records it handled.</li>
+      <li>Add a GitHub link next to your LinkedIn link.</li>
+    </ol>
+
+    <p><a href="/#resume-analysis">Get your own analysis</a> | <a href="/privacy/">Privacy</a></p>
+  </body>
+</html>
