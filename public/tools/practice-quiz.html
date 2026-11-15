@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Practice Quiz: Python and Aptitude | HireReady</title>
+  <meta name="description" content="Free Python and aptitude practice questions with instant answers. Runs in your browser." />
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 760px; margin: 30px auto; padding: 0 20px; line-height: 1.6; color: #1f2937; }
+    a { color: #2563eb; text-decoration: none; }
+    .tabs button { background: #e5e7eb; color: #1f2937; border: 0; padding: 10px 18px; border-radius: 8px; font-weight: bold; cursor: pointer; margin-right: 6px; }
+    .tabs button.on { background: #2563eb; color: #fff; }
+    .q { border: 1px solid #e5e7eb; border-radius: 10px; padding: 14px 16px; margin: 14px 0; }
+    .q label { display: block; padding: 3px 0; cursor: pointer; }
+    .go { background: #059669; color: #fff; border: 0; padding: 12px 22px; border-radius: 8px; font-weight: bold; cursor: pointer; }
+    .right { color: #047857; font-weight: bold; }
+    .wrong { color: #b91c1c; font-weight: bold; }
+    .why { font-size: 14px; color: #4b5563; margin-top: 6px; }
+    #score { font-size: 22px; font-weight: bold; }
+    code { background: #f3f4f6; padding: 1px 5px; border-radius: 4px; }
+  </style>
+</head>
+<body>
+  <p><a href="/">&larr; HireReady</a></p>
+  <h1>Practice Quiz</h1>
+  <p>Choose a topic, answer all questions and click Check answers. Nothing is saved or uploaded.</p>
+  <div class="tabs">
+    <button id="t-python" class="on" onclick="load('python')">Python</button>
+    <button id="t-apt" onclick="load('apt')">Aptitude</button>
+  </div>
+  <div id="quiz"></div>
+  <button class="go" onclick="check()">Check answers</button>
+  <p id="score"></p>
+  <p><a href="/career/">Read our resume and interview guides</a></p>
+
+  <script>
+    var SETS = {
+      python: [
+        { q: "What does <code>type(3.0)</code> return?", o: ["int", "float", "str", "double"], a: 1, why: "3.0 has a decimal point, so it is a float." },
+        { q: "What is <code>len(\"HireReady\")</code>?", o: ["8", "9", "10", "7"], a: 1, why: "HireReady has 9 characters." },
+        { q: "What is <code>[1, 2, 3][-1]</code>?", o: ["1", "2", "3", "Error"], a: 2, why: "Index -1 means the last item." },
+        { q: "What is <code>7 // 2</code>?", o: ["3.5", "3", "4", "2"], a: 1, why: "// is floor division, so 7 // 2 is 3." },
+        { q: "What does <code>\"abc\".upper()</code> return?", o: ["abc", "Abc", "ABC", "Error"], a: 2, why: "upper() converts all letters to capitals." },
+        { q: "Which of these is immutable?", o: ["list", "dict", "set", "tuple"], a: 3, why: "A tuple cannot be changed after it is created." },
+        { q: "What does <code>list(range(3))</code> give?", o: ["[1, 2, 3]", "[0, 1, 2]", "[0, 1, 2, 3]", "[1, 2]"], a: 1, why: "range(3) starts at 0 and stops before 3." },
+        { q: "What is <code>2 ** 3</code>?", o: ["6", "5", "8", "9"], a: 2, why: "** is power, so 2 to the power 3 is 8." }
+      ],
+      apt: [
+        { q: "What is 20% of 250?", o: ["40", "50", "60", "25"], a: 1, why: "250 x 20 / 100 = 50." },
+        { q: "Two numbers are in the ratio 3:5 and their sum is 160. What is the smaller number?", o: ["50", "60", "70", "80"], a: 1, why: "Total parts = 8. One part = 20. Smaller = 3 x 20 = 60." },
+        { q: "A train runs at 60 km/h for 2.5 hours. How far does it go?", o: ["120 km", "140 km", "150 km", "160 km"], a: 2, why: "Distance = speed x time = 60 x 2.5 = 150 km." },
+        { q: "A can finish a job in 10 days and B in 15 days. Working together, how many days do they need?", o: ["5", "6", "8", "12"], a: 1, why: "Together in one day: 1/10 + 1/15 = 1/6, so 6 days." },
+        { q: "What is the simple interest on Rs 2000 at 5% per year for 2 years?", o: ["Rs 100", "Rs 150", "Rs 200", "Rs 250"], a: 2, why: "SI = 2000 x 5 x 2 / 100 = 200." },
+        { q: "What is the average of 10, 20, 30 and 40?", o: ["20", "25", "30", "35"], a: 1, why: "Sum = 100, divided by 4 = 25." },
+        { q: "Find the next number: 2, 6, 12, 20, 30, ?", o: ["38", "40", "42", "44"], a: 2, why: "Differences are 4, 6, 8, 10, so the next difference is 12 and 30 + 12 = 42." },
+        { q: "An item costs Rs 800 after a 25% discount on the marked price. What is the final price?", o: ["Rs 600", "Rs 640", "Rs 700", "Rs 750"], a: 0, why: "Final price = 800 x 75 / 100 = 600. (Here Rs 800 is the marked price.)" }
+      ]
+    };
+    var current = "python";
+
+    function load(key) {
+      current = key;
+      document.getElementById("t-python").className = key === "python" ? "on" : "";
+      document.getElementById("t-apt").className = key === "apt" ? "on" : "";
+      document.getElementById("score").textContent = "";
+      var html = "";
+      SETS[key].forEach(function (item, i) {
+        html += '<div class="q"><b>' + (i + 1) + ". </b>" + item.q;
+        item.o.forEach(function (opt, j) {
+          html += '<label><input type="radio" name="q' + i + '" value="' + j + '"> ' + opt + "</label>";
+        });
+        html += '<div class="why" id="r' + i + '"></div></div>';
+      });
+      document.getElementById("quiz").innerHTML = html;
+    }
+
+    function check() {
+      var score = 0, set = SETS[current];
+      set.forEach(function (item, i) {
+        var chosen = document.querySelector('input[name="q' + i + '"]:checked');
+        var box = document.getElementById("r" + i);
+        if (!chosen) { box.innerHTML = '<span class="wrong">Not answered.</span> Correct answer: ' + item.o[item.a] + ". " + item.why; return; }
+        if (Number(chosen.value) === item.a) { score++; box.innerHTML = '<span class="right">Correct.</span> ' + item.why; }
+        else { box.innerHTML = '<span class="wrong">Wrong.</span> Correct answer: ' + item.o[item.a] + ". " + item.why; }
+      });
+      document.getElementById("score").textContent = "Score: " + score + " / " + set.length;
+    }
+    load("python");
+  </script>
+</body>
+</html>
